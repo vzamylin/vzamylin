@@ -16,16 +16,10 @@ public class Counter {
      */
     public int add(int start, int finish) {
         int result = 0;
-        // Скорректируем границы диапазона до ближайших четных чисел, чтобы потом не проверять четность в цикле.
-        if (start % 2 != 0) {
-            start++;
-        }
-        if (finish % 2 != 0) {
-            finish--;
-        }
-        // Рассчитаем нужную нам сумму четных чисел в диапазоне.
-        for (int i = start; i <= finish; i += 2) {
-            result += i;
+        for (int i = start; i <= finish; i++) {
+            if (i % 2 == 0) {
+                result += i;
+            }
         }
         return result;
     }
