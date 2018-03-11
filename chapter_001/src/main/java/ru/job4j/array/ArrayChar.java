@@ -3,8 +3,8 @@ package ru.job4j.array;
 /**
  * Обертка над строкой.
  * @author vzamylin
- * @version 1
- * @since 06.03.2018
+ * @version 2
+ * @since 12.03.2018
  */
 public class ArrayChar {
     private char[] data;
@@ -33,6 +33,23 @@ public class ArrayChar {
                     result = false;
                     break;
                 }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Проверяет содержание указанной подстроки в исходной строке.
+     * @param origin Исходная строка.
+     * @param sub Подстрока.
+     * @return true, если подстрока содержится в исходной строке, иначе false.
+     */
+    public boolean contains(String origin, String sub) {
+        boolean result = false;
+        for (int i = 0; i <= origin.length() - sub.length(); i++) {
+            if (new ArrayChar(origin.substring(i)).startWith(sub)) {
+                result = true;
+                break;
             }
         }
         return result;

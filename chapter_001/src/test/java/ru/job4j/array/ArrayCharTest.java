@@ -7,8 +7,8 @@ import static org.hamcrest.core.Is.is;
 /**
  * Тесты обертки над строкой.
  * @author vzamylin
- * @version 1
- * @since 06.03.2018
+ * @version 2
+ * @since 12.03.2018
  */
 public class ArrayCharTest {
 
@@ -55,5 +55,64 @@ public class ArrayCharTest {
         ArrayChar arrayChar = new ArrayChar("Привет");
         assertThat(arrayChar.startWith("при"), is(false));
         assertThat(arrayChar.startWith("риве"), is(false));
+    }
+
+    /**
+     * Проверка содержания подстроки в исходной строке,
+     * когда подстрока пустая, а исходная строка не пустая.
+     */
+    @Test
+    public void whenSubStrIsEmptyAndOriginStrIsNotEmpty() {
+        assertThat(new ArrayChar("").contains("123", ""), is(true));
+    }
+
+    /**
+     * Проверка содержания подстроки в исходной строке,
+     * когда подстрока пустая, и исходная строка пустая.
+     */
+    @Test
+    public void whenSubStrIsEmptyAndOriginStrIsEmpty() {
+        assertThat(new ArrayChar("").contains("", ""), is(true));
+    }
+
+    /**
+     * Проверка содержания подстроки в исходной строке,
+     * когда длина подстроки превышает длину исходной строки.
+     */
+    @Test
+    public void whenSubStrLengthMoreThanOriginStrLength() {
+        ArrayChar arrayChar = new ArrayChar("");
+        assertThat(arrayChar.contains("", "1"), is(false));
+        assertThat(arrayChar.contains("12", "12!"), is(false));
+        assertThat(arrayChar.contains("123", "12345"), is(false));
+    }
+
+    /**
+     * Проверка, что подстрока содержится в исходной строке.
+     */
+    @Test
+    public void whenOriginStrContainsSubStr() {
+        ArrayChar arrayChar = new ArrayChar("");
+        assertThat(arrayChar.contains("12345", "1"), is(true));
+        assertThat(arrayChar.contains("12345", "123"), is(true));
+        assertThat(arrayChar.contains("12345", "234"), is(true));
+        assertThat(arrayChar.contains("12345", "34"), is(true));
+        assertThat(arrayChar.contains("12345", "345"), is(true));
+        assertThat(arrayChar.contains("12345", "12345"), is(true));
+    }
+
+    /**
+     * Проверка, что подстрока не содержится в исходной строке.
+     */
+    @Test
+    public void whenOriginStrNotContainsSubStr() {
+        ArrayChar arrayChar = new ArrayChar("");
+        assertThat(arrayChar.contains("12345", "0"), is(false));
+        assertThat(arrayChar.contains("12345", "0123"), is(false));
+        assertThat(arrayChar.contains("12345", "13"), is(false));
+        assertThat(arrayChar.contains("12345", "24"), is(false));
+        assertThat(arrayChar.contains("12345", "35"), is(false));
+        assertThat(arrayChar.contains("12345", "1345"), is(false));
+        assertThat(arrayChar.contains("12345", "12346"), is(false));
     }
 }
