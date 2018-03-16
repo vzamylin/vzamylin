@@ -18,9 +18,9 @@ public class Matrix {
         int[][] resultMatrix;
         if (size > 0) {
             resultMatrix = new int[size][size];
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    resultMatrix[i][j] = (i + 1) * (j + 1);
+            for (int row = 0; row < size; row++) {
+                for (int column = 0; column < size; column++) {
+                    resultMatrix[row][column] = (row + 1) * (column + 1);
                 }
             }
         } else {

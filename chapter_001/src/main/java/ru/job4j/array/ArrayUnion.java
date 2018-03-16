@@ -26,8 +26,8 @@ public class ArrayUnion {
 
     /**
      * Составить новый отсортированный массив из элементов двух исходных отсортированных массивов.
-     * @param firstArray Первый исходный отсортированный массив.
-     * @param secondArray Второй исходный отсортированный массив.
+     * @param first Первый исходный отсортированный массив.
+     * @param second Второй исходный отсортированный массив.
      * @return Новый отсортированный массив, состоящий из элементов исходных массивов.<br/>
      * Если хотя бы один из исходных массивов не отсортирован, возвращается пустой массив.<br/>
      * <br/>
@@ -42,34 +42,34 @@ public class ArrayUnion {
      * И т.д. вплоть до последнего элемента 1-ого массива, причем, после последней итерации не забываем дописать в результирующий массив оставшиеся элементы 2-ого массива, которые больше последнего элемента 1-ого массива, если таковые есть.
      *
      */
-    public int[] unionSorted(int[] firstArray, int[] secondArray) {
-        int[] resultArray;
-        if (!this.isArraySorted(firstArray) || !this.isArraySorted(secondArray)) {
-            resultArray = new int[0];
+    public int[] unionSorted(int[] first, int[] second) {
+        int[] result;
+        if (!this.isArraySorted(first) || !this.isArraySorted(second)) {
+            result = new int[0];
         } else {
-            resultArray = new int[firstArray.length + secondArray.length];
-            int startIndexOfSecondArray = 0;
-            int currentIndexOfResultArray = -1;
-            for (int i = 0; i < firstArray.length; i++) {
-                for (int j = startIndexOfSecondArray; j < secondArray.length; j++) {
-                    if (secondArray[j] <= firstArray[i]) {
-                        resultArray[++currentIndexOfResultArray] = secondArray[j];
+            result = new int[first.length + second.length];
+            int startIndexOfSecond = 0;
+            int indexOfResult = -1;
+            for (int indexOfFirst = 0; indexOfFirst < first.length; indexOfFirst++) {
+                for (int indexOfSecond = startIndexOfSecond; indexOfSecond < second.length; indexOfSecond++) {
+                    if (second[indexOfSecond] <= first[indexOfFirst]) {
+                        result[++indexOfResult] = second[indexOfSecond];
                         // Прошли полностью 2-ой массив - больше заходить в него не надо.
-                        if (j == secondArray.length - 1) {
-                            startIndexOfSecondArray = secondArray.length;
+                        if (indexOfSecond == second.length - 1) {
+                            startIndexOfSecond = second.length;
                         }
                     } else {
-                        startIndexOfSecondArray = j;
+                        startIndexOfSecond = indexOfSecond;
                         break;
                     }
                 }
-                resultArray[++currentIndexOfResultArray] = firstArray[i];
+                result[++indexOfResult] = first[indexOfFirst];
             }
             // Если при пройденном 1-ом массиве 2-ой не прошли полностью, допишем из последнего оставшиеся элементы в результирующий.
-            for (int j = startIndexOfSecondArray; j < secondArray.length; j++) {
-                resultArray[++currentIndexOfResultArray] = secondArray[j];
+            for (int indexOfSecond = startIndexOfSecond; indexOfSecond < second.length; indexOfSecond++) {
+                result[++indexOfResult] = second[indexOfSecond];
             }
         }
-        return resultArray;
+        return result;
     }
 }
