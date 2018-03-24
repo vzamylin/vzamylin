@@ -31,32 +31,6 @@ public class ArrayUnionTest {
     }
 
     /**
-     * Проверка получения пустого массива при попытке объединения массивов, хотя бы один из которых не отсортирован.
-     */
-    @Test
-    public void whenOneOrBothArraysAreNotSorted() {
-        ArrayUnion arrayUnion = new ArrayUnion();
-        assertThat(arrayUnion.unionSorted(
-                       new int[]{-1, 0, 1, 3, 2, 5, 7},
-                       new int[]{-1, 0, 1, 3, 4, 5, 7}
-                   ),
-                   is(new int[]{})
-        );
-        assertThat(arrayUnion.unionSorted(
-                       new int[]{-1, 0, 1, 3, 4, 5, 7},
-                       new int[]{-1, 0, 1, 1, 0, 3, 4, 5, 7}
-                   ),
-                   is(new int[]{})
-        );
-        assertThat(arrayUnion.unionSorted(
-                       new int[]{-1, 0, 1, 3, 4, 3, 5, 7},
-                       new int[]{-1, 0, 1, 1, 0, 3, 4, 5, 7}
-                   ),
-                   is(new int[]{})
-        );
-    }
-
-    /**
      * Проверка объединения двух отсортированных массивов, хотя бы один из которых пустой.
      */
     @Test
