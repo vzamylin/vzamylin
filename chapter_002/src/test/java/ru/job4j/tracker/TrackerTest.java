@@ -5,6 +5,8 @@ import java.util.Arrays;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Тесты для хранилища заявок.
@@ -81,21 +83,21 @@ public class TrackerTest {
         assertThat(trackerContent[2], is(items[2]));
         // Заменим 3-ю заявку
         Item newItem = new Item(null, "nm", "dsc", 32L, null);
-        tracker.replace(trackerContent[2].getId(), newItem);
+        assertTrue(tracker.replace(trackerContent[2].getId(), newItem));
         // Проверим новое содержимое 3-ей заявки после замены
         trackerContent = tracker.findAll();
         assertThat(trackerContent[2], is(newItem));
         // Попробуем заменить заявку с несуществующим id
         Item[] trackerContentOld = Arrays.copyOf(trackerContent, trackerContent.length);
-        tracker.replace("2333E", new Item());
-        tracker.replace(null, new Item());
+        assertFalse(tracker.replace("2333E", new Item()));
+        assertFalse(tracker.replace(null, new Item()));
         // Проверим, что ничего не изменилось
         trackerContent = tracker.findAll();
         assertThat(trackerContent, is(trackerContentOld));
     }
 
     /**
-     * Проверка удаления заявок
+     * Проверка удаления заявок.
      */
     @Test
     public void whenDeleteItem() {
@@ -107,13 +109,13 @@ public class TrackerTest {
         }
         addItemsToTracker(items5, tracker);
         // Удалим последнюю заявку
-        tracker.delete(tracker.findAll()[4].getId());
+        assertTrue(tracker.delete(tracker.findAll()[4].getId()));
         // Проверим, что в хранилище осталось только 4 первых заявки
         Item[] items4;
         items4 = Arrays.copyOf(items5, items5.length - 1);
         assertThat(tracker.findAll(), is(items4));
         // Удалим НЕ последнюю заявку из оставшихся 4-х (2-ую)
-        tracker.delete(tracker.findAll()[1].getId());
+        assertTrue(tracker.delete(tracker.findAll()[1].getId()));
         // Проверим, что в хранилище остались только 1-ая, 3-я и 4-ая заявки, и расположены они без промежутков
         Item[] items3 = new Item[3];
         items3[0] = items4[0];
@@ -123,8 +125,8 @@ public class TrackerTest {
         // Попробуем удалить заявку с несуществующим id
         Item[] trackerContent = tracker.findAll();
         Item[] trackerContentOld = Arrays.copyOf(trackerContent, trackerContent.length);
-        tracker.delete("1F");
-        tracker.delete(null);
+        assertFalse(tracker.delete("1F"));
+        assertFalse(tracker.delete(null));
         // Проверим, что ничего не изменилось
         trackerContent = tracker.findAll();
         assertThat(trackerContent, is(trackerContentOld));

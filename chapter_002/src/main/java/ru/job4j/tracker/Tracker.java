@@ -64,13 +64,15 @@ public class Tracker {
      * Если заявка с указанным идентификатором не существует в хранилище, то ничего не происходит.
      * @param id Идентификатор заменяемой заявки.
      * @param item Заявка, на которую заменяем.
+     * @return true - если заявка найдена и заменена, false - если заявка не найдена.
      */
-    public void replace(String id, Item item) {
+    public boolean replace(String id, Item item) {
         int index = this.findIndexById(id);
         if (index != -1) {
             item.setId(id);
             this.items[index] = item;
         }
+        return index != -1;
     }
 
     /**
@@ -79,8 +81,9 @@ public class Tracker {
      * т.е. после удаления хранилище не становится разреженным.<br/>
      * Если заявка с указанным идентификатором не существует в хранилище, то ничего не происходит.
      * @param id Идентификатор удаляемой заявки.
+     * @return true - если заявка найдена и удалена, false - если заявка не найдена.
      */
-    public void delete(String id) {
+    public boolean delete(String id) {
         int index = this.findIndexById(id);
         if (index != -1) {
             int movingCount = this.position - 1 - index; // Кол-во непустых сдвигаемых заявок после удаляемой
@@ -90,6 +93,7 @@ public class Tracker {
             // При удалении последней непустой заявки сдвигаем указатель во избежание разреживания хранилища при следующем добавлении новой заявки
             this.items[--this.position] = null;
         }
+        return index != -1;
     }
 
     /**
