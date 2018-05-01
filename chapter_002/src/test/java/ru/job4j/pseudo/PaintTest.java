@@ -3,6 +3,9 @@ package ru.job4j.pseudo;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.StringJoiner;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -10,38 +13,48 @@ import static org.hamcrest.core.Is.is;
 /**
  * Тесты вывода фигур на консоль.
  * @author vzamylin
- * @version 1
- * @since 15.04.2018
+ * @version 2
+ * @since 01.05.2018
  */
 public class PaintTest {
+    private final PrintStream stdOut = System.out; // Стандартный дефолтный вывод в консоль.
+    private final ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream(); // Вывод в байтовый массив.
+
+    /**
+     * Установка вывода в байтовый массив (перед запуском каждого теста).
+     */
+    @Before
+    public void setByteArrayOut() {
+        System.out.println("Execute before method");
+        System.setOut(new PrintStream(this.byteArrayOut));
+    }
+
+    /**
+     * Возврат стандартного вывода в консоль (после запуска каждого теста).
+     */
+    @After
+    public void setStdOut() {
+        System.setOut(this.stdOut);
+        System.out.println("Execute after method");
+    }
 
     /**
      * Проверка вывода треугольника.
      */
     @Test
     public void whenPrintTriangle() {
-        // Запоминаем ссылку на текущий стандартный поток вывода в консоль и переопределяем его на вывод в байтовый массив.
-        PrintStream stdOut = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        try {
-            // Выводим треугольник
-            new Paint().print(new Triangle());
-            // Проверяем результат
-            assertThat(
-                    out.toString(),
-                    is(new StringJoiner(System.lineSeparator())
-                            .add("  +  ")
-                            .add(" + + ")
-                            .add("+++++")
-                            .add("")
-                            .toString()
-                    )
-            );
-        } finally {
-            // Возвращаем стандартный поток вывода в консоль
-            System.setOut(stdOut);
-        }
+        new Paint().print(new Triangle());
+        assertThat(
+                this.byteArrayOut.toString(),
+                is(new StringJoiner(System.lineSeparator())
+                        .add("  +  ")
+                        .add(" + + ")
+                        .add("+++++")
+                        .add("")
+                        .toString()
+                )
+        );
+
     }
 
     /**
@@ -49,28 +62,18 @@ public class PaintTest {
      */
     @Test
     public void whenPrintSquare() {
-        // Запоминаем ссылку на текущий стандартный поток вывода в консоль и переопределяем его на вывод в байтовый массив.
-        PrintStream stdOut = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        try {
-            // Выводим квадрат
-            new Paint().print(new Square());
-            // Проверяем результат
-            assertThat(
-                    out.toString(),
-                    is(new StringJoiner(System.lineSeparator())
-                            .add("++++")
-                            .add("+  +")
-                            .add("+  +")
-                            .add("++++")
-                            .add("")
-                            .toString()
-                    )
-            );
-        } finally {
-            // Возвращаем стандартный поток вывода в консоль
-            System.setOut(stdOut);
-        }
+        new Paint().print(new Square());
+        assertThat(
+                this.byteArrayOut.toString(),
+                is(new StringJoiner(System.lineSeparator())
+                        .add("++++")
+                        .add("+  +")
+                        .add("+  +")
+                        .add("++++")
+                        .add("")
+                        .toString()
+                )
+        );
+
     }
 }
