@@ -1,16 +1,45 @@
 package ru.job4j.tracker;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.StringJoiner;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
  * Тесты пользовательского интерфейса системы заявок (Tracker).
  * @author vzamylin
- * @version 1
- * @since 11.04.2018
+ * @version 2
+ * @since 29.05.2018
  */
 public class StartUITest {
+    private final PrintStream stdOut = System.out; // Стандартный дефолтный вывод в консоль.
+    private final ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream(); // Вывод в байтовый массив.
+
+    /**
+     * Установка вывода в байтовый массив.
+     * Автоматически выполняется перед запуском каждого теста, но по сути это нужно только для тестов вывода на консоль.
+     */
+    @Before
+    public void setByteArrayOut() {
+        System.out.println("Execute before method");
+        System.setOut(new PrintStream(this.byteArrayOut));
+    }
+
+    /**
+     * Возврат стандартного вывода в консоль.
+     * Автоматически выполняется после запуска каждого теста.
+     */
+    @After
+    public void setStdOut() {
+        System.setOut(this.stdOut);
+        System.out.println("Execute after method");
+    }
 
     /**
      * Проверка добавления заявки.
@@ -56,5 +85,49 @@ public class StartUITest {
         new StartUI(new StubInput(new String[]{"3", id, "6"}), tracker).init();
         // Проверить результат удаления
         assertThat(tracker.findAll().length, is(0));
+    }
+
+    /**
+     * Проверка вывода в консоль всех имеющихся заявок.
+     */
+    @Test
+    public void whenShowAllItems() {
+        String lineSeparator = System.lineSeparator();
+        String menu =
+                new StringJoiner(System.lineSeparator())
+                        .add("-------------------------------------------------------")
+                        .add("Меню:")
+                        .add("0. Добавить новую заявку")
+                        .add("1. Показать все имеющиеся заявки")
+                        .add("2. Изменить заявку")
+                        .add("3. Удалить заявку")
+                        .add("4. Найти заявку по идентификатору")
+                        .add("5. Найти заявки по имени")
+                        .add("6. Выйти из программы")
+                        .add("-------------------------------------------------------")
+                        .toString();
+        Tracker tracker = new Tracker();
+        // Добавить 2 заявки
+        tracker.add(new Item(null, "name", "desc", 0L, null));
+        tracker.add(new Item(null, "name1", "desc1", 0L, null));
+        // Вывести эти заявки (выбрать в меню "Показать все заявки"(1) и выйти из программы(6))
+        new StartUI(new StubInput(new String[]{"1", "6"}), tracker).init();
+        // Проверить содержимое байтового массива после вывода в него заявок (вместе с меню)
+        assertThat(
+                this.byteArrayOut.toString(),
+                is(// Пришлось сделать обычную конкатенацию вместо StringJoiner/StringBuilder,
+                   // т.к. при использовании последних в данном случае "съедаются" символы возврата каретки /r, которые изначально были в строке MENU.
+                        menu
+                        + lineSeparator
+                        + "Список заявок:"
+                        + lineSeparator
+                        + tracker.findAll()[0].toString()
+                        + lineSeparator
+                        + tracker.findAll()[1].toString()
+                        + lineSeparator
+                        + menu
+                        + lineSeparator
+                )
+        );
     }
 }
