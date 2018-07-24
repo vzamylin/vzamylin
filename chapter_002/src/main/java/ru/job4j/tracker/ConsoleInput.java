@@ -21,4 +21,30 @@ public class ConsoleInput implements Input {
         System.out.println(question);
         return this.scanner.nextLine();
     }
+
+    /**
+     * Задать вопрос пользователю и получить ответ с проверкой допустимости ответа.
+     * @param question Вопрос.
+     * @param range Список допустимых числовых значений ответа пользователя.
+     * @return Ответ.
+     * @throws NumberFormatException если введено не число.
+     * @throws MenuOutException если введено число не из допустимого списка.
+     */
+    @Override
+    public int ask(String question, int[] range) {
+        int result = Integer.parseInt(this.ask(question));
+        boolean inRange = false;
+        if (range != null && range.length > 0) {
+            for (int value: range) {
+                if (result == value) {
+                    inRange = true;
+                    break;
+                }
+            }
+        }
+        if (!inRange) {
+            throw new MenuOutException("Введите число из указанного списка.");
+        }
+        return result;
+    }
 }

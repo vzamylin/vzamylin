@@ -26,18 +26,12 @@ public class StartUI {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
-        int result;
+        int[] range = menu.getAvailableKeys();
+        boolean exit;
         do {
             menu.show();
-            try {
-                result = menu.executeByKey(Integer.parseInt(this.input.ask("Введите пункт меню:")));
-            } catch (NumberFormatException e) {
-                result = -1;
-            }
-            if (result == -1) {
-                System.out.println("Введен недопустимый пункт!");
-            }
-        } while (result != 1);
+            exit = menu.executeByKey(this.input.ask("Введите пункт меню:", range));
+        } while (!exit);
     }
 
     /**
@@ -45,6 +39,6 @@ public class StartUI {
      * @param args Аргументы.
      */
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }

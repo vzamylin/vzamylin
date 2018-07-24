@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import java.util.Arrays;
 import java.util.StringJoiner;
 
 /**
@@ -55,22 +56,43 @@ public class MenuTracker {
     /**
      * Выполнить действие с указанным кодом.
      * @param key Код действия.
-     * @return Результат выполнения:<br/>
-     *         0 - Действие успешно выполнено, работа программы продолжается.<br/>
-     *         1 - Действие успешно выполнено, требуется выйти из программы.<br/>
-     *         -1 - Действие с указанным кодом не найдено.
+     * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
+     * @throws ActionNotFound если действие с указанным кодом не найдено.
      */
-    public int executeByKey(int key) {
-        int result = -1;
+    public boolean executeByKey(int key) {
+        boolean result = false;
+        boolean found = false;
         for (UserAction action : this.actions) {
             if (action == null) {
                 break;
             } else if (action.key() == key) {
-                result = action.execute(this.input, this.tracker) ? 1 : 0;
+                result = action.execute(this.input, this.tracker);
+                found = true;
                 break;
             }
         }
+        if (!found) {
+            throw new ActionNotFound("Действие с указанным кодом не найдено.");
+        }
         return result;
+    }
+
+    /**
+     * Получить список доступных кодов действий.
+     * Имеет смысл вызывать после fillActions(), т.к. до этого момента список будет пустой.
+     * @return Массив со списком кодов действий.
+     */
+    public int[] getAvailableKeys() {
+        int[] keys = new int[this.actions.length];
+        int count = 0;
+        for (UserAction action: this.actions) {
+            if (action == null) {
+                break;
+            } else {
+                keys[count++] = action.key();
+            }
+        }
+        return Arrays.copyOf(keys, count);
     }
 
     /**

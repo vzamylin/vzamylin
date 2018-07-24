@@ -14,7 +14,7 @@ public class StubInput implements Input {
      * Конструктор.
      * @param values Массив предопределенных значений для эмулируемого ввода.
      */
-    public StubInput(String[] values) {
+    StubInput(String[] values) {
         this.values = values;
     }
 
@@ -27,5 +27,19 @@ public class StubInput implements Input {
     @Override
     public String ask(String question) {
         return this.values[this.position++];
+    }
+
+    /**
+     * Эмуляция ответа пользователя с преобразованием в целое число.
+     * @param question Любой фиктивный вопрос.
+     *                 Параметр не анализируется и нужен лишь для соответствия сигнатуры аналогичному методу из реализуемого интерфейса.
+     * @param range Список допустимых числовых значений ответа пользователя.
+     *              Параметр не анализируется и нужен лишь для соответствия сигнатуры аналогичному методу из реализуемого интерфейса.
+     * @return Эмулируемый ответ как очередное предопределенное значение из массива, указанного при инициализации текущего объекта.
+     * @throws NumberFormatException если очередное предопределенное в массиве значение не число.
+     */
+    @Override
+    public int ask(String question, int[] range) {
+        return Integer.parseInt(this.ask(question));
     }
 }
