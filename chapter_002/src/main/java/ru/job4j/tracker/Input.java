@@ -22,4 +22,23 @@ public interface Input {
      * @return Ответ.
      */
     int ask(String question, int[] range);
+
+    /**
+     * Проверка вхождения указанного целого числа в указанный список допустимых значений.
+     * @param value Проверяемое число.
+     * @param range Список допустимых значений.
+     * @return true - если число входит в указанный список, false - если не входит.
+     */
+    default boolean inRange(int value, int[] range) {
+        boolean result = false;
+        if (range != null && range.length > 0) {
+            for (int currentValue: range) {
+                if (value == currentValue) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 }

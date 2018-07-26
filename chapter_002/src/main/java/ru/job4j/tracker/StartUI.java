@@ -9,6 +9,7 @@ package ru.job4j.tracker;
 public class StartUI {
     private final Input   input; // Ввод данных
     private final Tracker tracker; // Хранилище заявок
+    private boolean exit = false; // Признак выхода из программы
 
     /**
      * Конструктор.
@@ -21,17 +22,24 @@ public class StartUI {
     }
 
     /**
+     * Установка признака выхода из программы.
+     * @param exit Признак выхода из программы.
+     */
+    public void setExit(boolean exit) {
+        this.exit = exit;
+    }
+
+    /**
      * Основной цикл программы.
      */
     public void init() {
-        MenuTracker menu = new MenuTracker(this.input, this.tracker);
+        MenuTracker menu = new MenuTracker(this.input, this.tracker, this);
         menu.fillActions();
         int[] range = menu.getAvailableKeys();
-        boolean exit;
         do {
             menu.show();
-            exit = menu.executeByKey(this.input.ask("Введите пункт меню:", range));
-        } while (!exit);
+            menu.executeByKey(this.input.ask("Введите пункт меню:", range));
+        } while (!this.exit);
     }
 
     /**

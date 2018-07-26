@@ -17,9 +17,8 @@ public interface UserAction {
      * Выполнить действие.
      * @param input Интерфейс ввода данных.
      * @param tracker Хранилище заявок.
-     * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
      */
-    boolean execute(Input input, Tracker tracker);
+    void execute(Input input, Tracker tracker);
 
     /**
      * Получить информацию о действии.

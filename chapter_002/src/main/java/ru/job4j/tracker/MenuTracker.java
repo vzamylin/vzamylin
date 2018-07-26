@@ -12,16 +12,19 @@ import java.util.StringJoiner;
 public class MenuTracker {
     private final Input   input;
     private final Tracker tracker;
+    private final StartUI ui;
     private UserAction[] actions = new UserAction[7];
 
     /**
      * Конструктор.
      * @param input Ввод данных.
      * @param tracker Хранилище заявок.
+     * @param ui Пользовательский интерфейс.
      */
-    MenuTracker(Input input, Tracker tracker) {
+    MenuTracker(Input input, Tracker tracker, StartUI ui) {
         this.input = input;
         this.tracker = tracker;
+        this.ui = ui;
     }
 
     /**
@@ -34,7 +37,7 @@ public class MenuTracker {
         this.actions[3] = new MenuTracker.DeleteItem();
         this.actions[4] = new MenuTracker.FindItemById();
         this.actions[5] = this.new FindItemsByName();
-        this.actions[6] = new Exit();
+        this.actions[6] = new Exit(this.ui);
     }
 
     /**
@@ -56,25 +59,16 @@ public class MenuTracker {
     /**
      * Выполнить действие с указанным кодом.
      * @param key Код действия.
-     * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
-     * @throws ActionNotFound если действие с указанным кодом не найдено.
      */
-    public boolean executeByKey(int key) {
-        boolean result = false;
-        boolean found = false;
+    public void executeByKey(int key) {
         for (UserAction action : this.actions) {
             if (action == null) {
                 break;
             } else if (action.key() == key) {
-                result = action.execute(this.input, this.tracker);
-                found = true;
+                action.execute(this.input, this.tracker);
                 break;
             }
         }
-        if (!found) {
-            throw new ActionNotFound("Действие с указанным кодом не найдено.");
-        }
-        return result;
     }
 
     /**
@@ -130,15 +124,13 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             String name = input.ask("Введите название заявки:");
             String desc = input.ask("Введите описание заявки:");
             Item newItem = tracker.add(new Item(null, name, desc, System.currentTimeMillis(), null));
             System.out.println("Заявка с идентификатором " + newItem.getId() + " успешно создана.");
-            return false;
         }
 
         /**
@@ -169,12 +161,10 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             MenuTracker.this.showItems(tracker.findAll(), "Список заявок:", "Заявок нет");
-            return false;
         }
 
         /**
@@ -205,10 +195,9 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите идентификатор изменяемой заявки:");
             String newName = input.ask("Введите новое название заявки:");
             String newDesc = input.ask("Введите новое описание заявки:");
@@ -217,7 +206,6 @@ public class MenuTracker {
             } else {
                 System.out.println("Заявка с указанным идентификатором не найдена");
             }
-            return false;
         }
 
         /**
@@ -248,13 +236,11 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             String id = input.ask("Введите идентификатор удаляемой заявки:");
             System.out.println(tracker.delete(id) ? "Заявка успешно удалена" : "Заявка с указанным идентификатором не найдена");
-            return false;
         }
 
         /**
@@ -285,17 +271,15 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             Item item = tracker.findById(input.ask("Введите идентификатор искомой заявки:"));
             if (item != null) {
                 System.out.println(new StringJoiner(System.lineSeparator()).add("Найдена заявка:").add(item.toString()));
             } else {
                 System.out.println("Заявка с указанным идентификатором не найдена");
             }
-            return false;
         }
 
         /**
@@ -326,16 +310,14 @@ public class MenuTracker {
          * Выполнить действие.
          * @param input   Интерфейс ввода данных.
          * @param tracker Хранилище заявок.
-         * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
          */
         @Override
-        public boolean execute(Input input, Tracker tracker) {
+        public void execute(Input input, Tracker tracker) {
             MenuTracker.this.showItems(
                     tracker.findByName(input.ask("Введите имя искомых заявок:")),
                     "Найдены заявки:",
                     "Заявки с указанным именем не найдены"
             );
-            return false;
         }
 
         /**
@@ -353,6 +335,15 @@ public class MenuTracker {
  * Действие "Выйти из программы".
  */
 class Exit implements UserAction {
+    private final StartUI ui;
+
+    /**
+     * Конструктор.
+     * @param ui Пользовательский интерфейс.
+     */
+    Exit(StartUI ui) {
+        this.ui = ui;
+    }
 
     /**
      * Получить код действия.
@@ -367,11 +358,10 @@ class Exit implements UserAction {
      * Выполнить действие.
      * @param input   Интерфейс ввода данных.
      * @param tracker Хранилище заявок.
-     * @return Признак необходимости выхода из программы после выполнения действия, true - выйти из программы, false - продолжить работу программы.
      */
     @Override
-    public boolean execute(Input input, Tracker tracker) {
-        return true;
+    public void execute(Input input, Tracker tracker) {
+        this.ui.setExit(true);
     }
 
     /**
