@@ -41,7 +41,7 @@ public class StubInput implements Input {
     @Override
     public int ask(String question, int[] range) {
         int result = Integer.parseInt(this.ask(question));
-        if (!this.inRange(result, range)) {
+        if (!this.inRange(result, range, true)) {
             throw new MenuOutException("Предопределенное в заглушке значение не содержится в указанном списке.");
         }
         return result;

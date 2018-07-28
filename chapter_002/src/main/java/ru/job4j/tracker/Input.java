@@ -27,13 +27,14 @@ public interface Input {
      * Проверка вхождения указанного целого числа в указанный список допустимых значений.
      * @param value Проверяемое число.
      * @param range Список допустимых значений.
+     * @param checkValueEqIndex Признак дополнительной проверки равенства найденного в массиве числа его индексу.
      * @return true - если число входит в указанный список, false - если не входит.
      */
-    default boolean inRange(int value, int[] range) {
+    default boolean inRange(int value, int[] range, boolean checkValueEqIndex) {
         boolean result = false;
         if (range != null && range.length > 0) {
-            for (int currentValue: range) {
-                if (value == currentValue) {
+            for (int i = 0; i < range.length; i++) {
+                if (value == range[i] && (!checkValueEqIndex || value == i)) {
                     result = true;
                     break;
                 }

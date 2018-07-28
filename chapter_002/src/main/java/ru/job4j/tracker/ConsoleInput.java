@@ -33,7 +33,7 @@ public class ConsoleInput implements Input {
     @Override
     public int ask(String question, int[] range) {
         int result = Integer.parseInt(this.ask(question));
-        if (!this.inRange(result, range)) {
+        if (!this.inRange(result, range, true)) {
             throw new MenuOutException("Введите число из указанного списка.");
         }
         return result;
