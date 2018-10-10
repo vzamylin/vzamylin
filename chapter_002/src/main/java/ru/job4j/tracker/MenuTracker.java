@@ -6,8 +6,8 @@ import java.util.StringJoiner;
 /**
  * Меню действий пользователя.
  * @author vzamylin
- * @version 1
- * @since 27.06.2018
+ * @version 2
+ * @since 11.10.2018
  */
 public class MenuTracker {
     private final Input   input;
@@ -33,13 +33,13 @@ public class MenuTracker {
      * Это сделано для оптимизации, чтобы на этапе выполнения действия (см. executeByKey()) можно было сразу обращаться к нему по индексу, а не искать в массиве.
      */
     public void fillActions() {
-        this.actions[0] = new MenuTracker.AddItem();
-        this.actions[1] = this.new ShowAll();
-        this.actions[2] = new MenuTracker.ChangeItem();
-        this.actions[3] = new MenuTracker.DeleteItem();
-        this.actions[4] = new MenuTracker.FindItemById();
-        this.actions[5] = this.new FindItemsByName();
-        this.actions[6] = new Exit(this.ui);
+        this.actions[0] = new MenuTracker.AddItem(0, "Добавить новую заявку");
+        this.actions[1] = this.new ShowAll(1, "Показать все имеющиеся заявки");
+        this.actions[2] = new MenuTracker.ChangeItem(2, "Изменить заявку");
+        this.actions[3] = new MenuTracker.DeleteItem(3, "Удалить заявку");
+        this.actions[4] = new MenuTracker.FindItemById(4, "Найти заявку по идентификатору");
+        this.actions[5] = this.new FindItemsByName(5, "Найти заявки по имени");
+        this.actions[6] = new Exit(6, "Выйти из программы", this.ui);
     }
 
     /**
@@ -106,15 +106,15 @@ public class MenuTracker {
     /**
      * Действие "Добавить новую заявку".
      */
-    private static class AddItem implements UserAction {
+    private static class AddItem extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 0;
+        private AddItem(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -129,29 +129,20 @@ public class MenuTracker {
             Item newItem = tracker.add(new Item(null, name, desc, System.currentTimeMillis(), null));
             System.out.println("Заявка с идентификатором " + newItem.getId() + " успешно создана.");
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Добавить новую заявку");
-        }
     }
 
     /**
      * Действие "Показать все имеющиеся заявки".
      */
-    private class ShowAll implements UserAction {
+    private class ShowAll extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 1;
+        private ShowAll(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -163,29 +154,20 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             MenuTracker.this.showItems(tracker.findAll(), "Список заявок:", "Заявок нет");
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Показать все имеющиеся заявки");
-        }
     }
 
     /**
      * Действие "Изменить заявку".
      */
-    private static class ChangeItem implements UserAction {
+    private static class ChangeItem extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 2;
+        private ChangeItem(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -204,29 +186,20 @@ public class MenuTracker {
                 System.out.println("Заявка с указанным идентификатором не найдена");
             }
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Изменить заявку");
-        }
     }
 
     /**
      * Действие "Удалить заявку".
      */
-    private static class DeleteItem implements UserAction {
+    private static class DeleteItem extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 3;
+        private DeleteItem(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -239,29 +212,20 @@ public class MenuTracker {
             String id = input.ask("Введите идентификатор удаляемой заявки:");
             System.out.println(tracker.delete(id) ? "Заявка успешно удалена" : "Заявка с указанным идентификатором не найдена");
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Удалить заявку");
-        }
     }
 
     /**
      * Действие "Найти заявку по идентификатору".
      */
-    private static class FindItemById implements UserAction {
+    private static class FindItemById extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 4;
+        private FindItemById(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -278,29 +242,20 @@ public class MenuTracker {
                 System.out.println("Заявка с указанным идентификатором не найдена");
             }
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Найти заявку по идентификатору");
-        }
     }
 
     /**
      * Действие "Найти заявки по имени".
      */
-    private class FindItemsByName implements UserAction {
+    private class FindItemsByName extends BaseAction {
 
         /**
-         * Получить код действия.
-         * @return Код действия.
+         * Конструктор.
+         * @param key  Код действия.
+         * @param name Название действия.
          */
-        @Override
-        public int key() {
-            return 5;
+        private FindItemsByName(int key, String name) {
+            super(key, name);
         }
 
         /**
@@ -316,39 +271,24 @@ public class MenuTracker {
                     "Заявки с указанным именем не найдены"
             );
         }
-
-        /**
-         * Получить информацию о действии.
-         * @return Информация о действии.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Найти заявки по имени");
-        }
     }
 }
 
 /**
  * Действие "Выйти из программы".
  */
-class Exit implements UserAction {
+class Exit extends BaseAction {
     private final StartUI ui;
 
     /**
      * Конструктор.
+     * @param key  Код действия.
+     * @param name Название действия.
      * @param ui Пользовательский интерфейс.
      */
-    Exit(StartUI ui) {
+    Exit(int key, String name, StartUI ui) {
+        super(key, name);
         this.ui = ui;
-    }
-
-    /**
-     * Получить код действия.
-     * @return Код действия.
-     */
-    @Override
-    public int key() {
-        return 6;
     }
 
     /**
@@ -359,14 +299,5 @@ class Exit implements UserAction {
     @Override
     public void execute(Input input, Tracker tracker) {
         this.ui.setExit(true);
-    }
-
-    /**
-     * Получить информацию о действии.
-     * @return Информация о действии.
-     */
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Выйти из программы");
     }
 }
