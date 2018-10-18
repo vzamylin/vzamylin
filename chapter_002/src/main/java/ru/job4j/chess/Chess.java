@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -12,8 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import ru.job4j.chess.firuges.Cell;
-import ru.job4j.chess.firuges.Figure;
+import ru.job4j.chess.firuges.*;
 import ru.job4j.chess.firuges.black.*;
 import ru.job4j.chess.firuges.white.*;
 
@@ -60,10 +60,12 @@ public class Chess extends Application {
         );
         rect.setOnMouseReleased(
                 event -> {
-                    if (logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()))) {
+                    try {
+                        logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()));
                         rect.setX(((int) event.getX() / 40) * 40 + 5);
                         rect.setY(((int) event.getY() / 40) * 40 + 5);
-                    } else {
+                    } catch (FigureNotFoundException | ImpossibleMoveException | OccupiedWayException e) {
+                        this.showMessage("Ошибка хода фигуры!", e.getMessage(), Alert.AlertType.WARNING);
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
                     }
@@ -132,7 +134,7 @@ public class Chess extends Application {
         this.add(new RookBlack(Cell.H8), grid);
     }
 
-    public void buildWhiteTeam(Group grid) {
+    private void buildWhiteTeam(Group grid) {
         this.add(new PawnWhite(Cell.A2), grid);
         this.add(new PawnWhite(Cell.B2), grid);
         this.add(new PawnWhite(Cell.C2), grid);
@@ -175,5 +177,19 @@ public class Chess extends Application {
             }
         }
         return rst;
+    }
+
+    /**
+     * Показать сообщение на экране в отдельном окне.
+     * @param title Заголовок окна с сообщением.
+     * @param message Текст сообщения.
+     * @param type Тип сообщения (обычная информация, предупреждение, ошибка).
+     */
+    private void showMessage(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 }

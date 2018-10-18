@@ -1,29 +1,19 @@
 package ru.job4j.chess.firuges.white;
 
+import ru.job4j.chess.firuges.AbstractBishop;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * Фигура белый слон.
+ * @author vzamylin
+ * @version 1
+ * @since 17.10.2018
  */
-public class BishopWhite implements Figure {
-    private final Cell position;
+public class BishopWhite extends AbstractBishop {
 
     public BishopWhite(final Cell position) {
-        this.position = position;
-    }
-
-    @Override
-    public Cell position() {
-        return this.position;
-    }
-
-    @Override
-    public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] {dest};
+        super(position);
     }
 
     @Override

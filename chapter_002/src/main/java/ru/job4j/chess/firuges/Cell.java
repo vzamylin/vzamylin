@@ -17,4 +17,26 @@ public enum Cell {
         this.x = x;
         this.y = y;
     }
+
+
+    /**
+     * Найти ячейку по координатам x и y на шахматной доске.
+     * @param x Координата x.
+     * @param y Координата y.
+     * @return Ячейка.
+     * @throws CellNotFoundException Когда ячейка с заданными координатами не найдена в списке перечисления.
+     */
+    public static Cell findByXY(int x, int y) {
+        Cell result = null;
+        for (Cell cell : Cell.values()) {
+            if (cell.x == x && cell.y == y) {
+                result = cell;
+                break;
+            }
+        }
+        if (result == null) {
+            throw new CellNotFoundException(String.format("Ячейка с координатами (%s, %s) не найдена в списке перечисления.", x, y));
+        }
+        return result;
+    }
 }
