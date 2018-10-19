@@ -20,11 +20,15 @@ public abstract class AbstractBishop extends AbstractFigure implements WalkingDi
      * Путь из ячеек шахматной доски, который проходит фигура из заданной исходной позиции в заданную конечную позицию (исключая исходную позицию).
      * @param source Исходная позиция.
      * @param dest Конечная позиция.
-     * @return 1. Массив ячеек, содержащий путь фигуры (кроме ее исходной позиции), если переход фигуры из исходной в заданную позицию возможен.<br/>
-     *         2. Пустой массив нулевой размерности, если переход фигуры из исходной в заданную позицию невозможен.
+     * @return Массив ячеек, содержащий путь фигуры (кроме ее исходной позиции), если переход фигуры из исходной в заданную позицию возможен.
+     * @throws ImpossibleMoveException Если переход фигуры из исходной в заданную позицию невозможен.
      */
     @Override
-    public Cell[] way(Cell source, Cell dest) {
-        return this.wayDiagonal(source, dest);
+    public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
+        Cell[] way = this.wayDiagonal(source, dest);
+        if (way.length == 0) {
+            throw new ImpossibleMoveException("Слон может ходить только по диагонали!");
+        }
+        return way;
     }
 }

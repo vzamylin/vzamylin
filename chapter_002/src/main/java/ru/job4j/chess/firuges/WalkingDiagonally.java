@@ -22,9 +22,11 @@ interface WalkingDiagonally {
             && Math.abs(dest.x - source.x) == Math.abs(dest.y - source.y)
         ) {
             steps = new Cell[Math.abs(dest.x - source.x)];
+            int directionX = Integer.compare(dest.x, source.x);
+            int directionY = Integer.compare(dest.y, source.y);
             for (int i = 0; i < steps.length; i++) {
-                int x = source.x + (int) Math.signum(dest.x - source.x) * (i + 1);
-                int y = source.y + (int) Math.signum(dest.y - source.y) * (i + 1);
+                int x = source.x + directionX * (i + 1);
+                int y = source.y + directionY * (i + 1);
                 steps[i] = Cell.findByXY(x, y);
             }
 

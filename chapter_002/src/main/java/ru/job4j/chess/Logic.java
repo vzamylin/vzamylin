@@ -24,9 +24,6 @@ public class Logic {
             throw new FigureNotFoundException("В выбранной клетке нет фигуры!");
         }
         Cell[] steps = this.figures[index].way(source, dest);
-        if (!(steps.length > 0 && steps[steps.length - 1].equals(dest))) {
-            throw new ImpossibleMoveException("Фигура не может пойти на указанную клетку!");
-        }
         for (Cell step : steps) {
             if (this.findBy(step) != -1) {
                 throw new OccupiedWayException("Выбранный путь фигуры занят другими фигурами!");
