@@ -1,23 +1,23 @@
 package ru.job4j.chess.firuges.black;
 
-import ru.job4j.chess.firuges.AbstractPawn;
+import ru.job4j.chess.firuges.AbstractQueen;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 /**
- * Фигура черная пешка.
+ * Фигура черный ферзь.
  * @author vzamylin
  * @version 1
- * @since 19.10.2018
+ * @since 27.10.2018
  */
-public class PawnBlack extends AbstractPawn {
+public class QueenBlack extends AbstractQueen {
 
-    public PawnBlack(final Cell position) {
+    public QueenBlack(final Cell position) {
         super(position);
     }
 
     @Override
     public Figure copy(Cell dest) {
-        return new PawnBlack(dest);
+        return new QueenBlack(dest);
     }
 }

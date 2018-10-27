@@ -1,18 +1,18 @@
 package ru.job4j.chess.firuges;
 
 /**
- * Абстрактная фигура слон (с реализацией только общих методов для черного и белого слонов).
+ * Абстрактная фигура ладья (с реализацией только общих методов для черной и белой ладьи).
  * @author vzamylin
  * @version 1
- * @since 17.10.2018
+ * @since 27.10.2018
  */
-public abstract class AbstractBishop extends AbstractFigure implements WalkingDiagonally {
+public abstract class AbstractRook extends AbstractFigure implements WalkingLinearly {
 
     /**
      * Конструктор.
      * @param position Позиция фигуры на шахматной доске.
      */
-    public AbstractBishop(final Cell position) {
+    public AbstractRook(final Cell position) {
         super(position);
     }
 
@@ -27,9 +27,9 @@ public abstract class AbstractBishop extends AbstractFigure implements WalkingDi
      */
     @Override
     public Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
-        Cell[] steps = this.wayDiagonal(source, dest);
+        Cell[] steps = this.wayLine(source, dest);
         if (steps.length == 0) {
-            throw new ImpossibleMoveException("Слон может ходить только по диагонали!");
+            throw new ImpossibleMoveException("Ладья может ходить только по прямой линии!");
         }
         return steps;
     }

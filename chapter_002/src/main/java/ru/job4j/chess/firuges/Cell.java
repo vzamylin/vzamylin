@@ -35,7 +35,9 @@ public enum Cell {
             }
         }
         if (result == null) {
-            throw new CellNotFoundException(String.format("Ячейка с координатами (%s, %s) не найдена в списке перечисления.", x, y));
+            throw new CellNotFoundException(
+                    String.format("Ячейка с координатами (%s, %s) не найдена в списке перечисления.", x, y)
+            );
         }
         return result;
     }

@@ -1,24 +1,19 @@
 package ru.job4j.chess.firuges.white;
 
-import ru.job4j.chess.firuges.AbstractFigure;
+import ru.job4j.chess.firuges.AbstractKnight;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * Фигура белый конь.
+ * @author vzamylin
+ * @version 1
+ * @since 26.10.2018
  */
-public class KnightWhite extends AbstractFigure {
+public class KnightWhite extends AbstractKnight {
 
     public KnightWhite(final Cell position) {
         super(position);
-    }
-
-    @Override
-    public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] {dest};
     }
 
     @Override

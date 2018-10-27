@@ -21,12 +21,16 @@ public class BishopTest {
     @Test
     public void whenWalkingUpLeft() throws ImpossibleMoveException {
         AbstractBishop bishop;
-        // Черный слон
         bishop = new BishopBlack(Cell.C8);
-        assertThat(bishop.way(bishop.position(), Cell.A6), is(new Cell[]{Cell.B7, Cell.A6}));
-        // Белый слон
+        assertThat(
+                bishop.way(bishop.position(), Cell.A6),
+                is(new Cell[]{Cell.B7, Cell.A6})
+        );
         bishop = new BishopWhite(Cell.H8);
-        assertThat(bishop.way(bishop.position(), Cell.A1), is(new Cell[]{Cell.G7, Cell.F6, Cell.E5, Cell.D4, Cell.C3, Cell.B2, Cell.A1}));
+        assertThat(
+                bishop.way(bishop.position(), Cell.A1),
+                is(new Cell[]{Cell.G7, Cell.F6, Cell.E5, Cell.D4, Cell.C3, Cell.B2, Cell.A1})
+        );
     }
 
     /**
@@ -35,12 +39,15 @@ public class BishopTest {
     @Test
     public void whenWalkingUpRight() throws ImpossibleMoveException {
         AbstractBishop bishop;
-        // Черный слон
         bishop = new BishopBlack(Cell.A8);
-        assertThat(bishop.way(bishop.position(), Cell.B7), is(new Cell[]{Cell.B7}));
-        // Белый слон
+        assertThat(
+                bishop.way(bishop.position(), Cell.B7),
+                is(new Cell[]{Cell.B7})
+        );
         bishop = new BishopWhite(Cell.C7);
-        assertThat(bishop.way(bishop.position(), Cell.F4), is(new Cell[]{Cell.D6, Cell.E5, Cell.F4}));
+        assertThat(bishop.way(bishop.position(), Cell.F4),
+                is(new Cell[]{Cell.D6, Cell.E5, Cell.F4})
+        );
     }
 
     /**
@@ -49,12 +56,16 @@ public class BishopTest {
     @Test
     public void whenWalkingDownLeft() throws ImpossibleMoveException {
         AbstractBishop bishop;
-        // Черный слон
         bishop = new BishopBlack(Cell.G1);
-        assertThat(bishop.way(bishop.position(), Cell.A7), is(new Cell[]{Cell.F2, Cell.E3, Cell.D4, Cell.C5, Cell.B6, Cell.A7}));
-        // Белый слон
+        assertThat(
+                bishop.way(bishop.position(), Cell.A7),
+                is(new Cell[]{Cell.F2, Cell.E3, Cell.D4, Cell.C5, Cell.B6, Cell.A7})
+        );
         bishop = new BishopWhite(Cell.F6);
-        assertThat(bishop.way(bishop.position(), Cell.D8), is(new Cell[]{Cell.E7, Cell.D8}));
+        assertThat(
+                bishop.way(bishop.position(), Cell.D8),
+                is(new Cell[]{Cell.E7, Cell.D8})
+        );
     }
 
     /**
@@ -63,11 +74,15 @@ public class BishopTest {
     @Test
     public void whenWalkingDownRight() throws ImpossibleMoveException {
         AbstractBishop bishop;
-        // Черный слон
         bishop = new BishopBlack(Cell.A1);
-        assertThat(bishop.way(bishop.position(), Cell.H8), is(new Cell[]{Cell.B2, Cell.C3, Cell.D4, Cell.E5, Cell.F6, Cell.G7, Cell.H8}));
-        // Белый слон
+        assertThat(
+                bishop.way(bishop.position(), Cell.H8),
+                is(new Cell[]{Cell.B2, Cell.C3, Cell.D4, Cell.E5, Cell.F6, Cell.G7, Cell.H8})
+        );
         bishop = new BishopWhite(Cell.D3);
-        assertThat(bishop.way(bishop.position(), Cell.G6), is(new Cell[]{Cell.E4, Cell.F5, Cell.G6}));
+        assertThat(
+                bishop.way(bishop.position(), Cell.G6),
+                is(new Cell[]{Cell.E4, Cell.F5, Cell.G6})
+        );
     }
 }

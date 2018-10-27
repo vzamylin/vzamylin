@@ -68,6 +68,11 @@ public class Chess extends Application {
                         this.showMessage("Ошибка хода фигуры!", e.getMessage(), Alert.AlertType.WARNING);
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
+                    } catch (Throwable e) {
+                        this.showMessage("Внутренняя ошибка программы!", e.getMessage(), Alert.AlertType.ERROR);
+                        rect.setX(((int) momento.getX() / 40) * 40 + 5);
+                        rect.setY(((int) momento.getY() / 40) * 40 + 5);
+                        throw e;
                     }
                 }
         );
@@ -127,7 +132,7 @@ public class Chess extends Application {
         this.add(new RookBlack(Cell.A8), grid);
         this.add(new KnightBlack(Cell.B8), grid);
         this.add(new BishopBlack(Cell.C8), grid);
-        this.add(new QeenBlack(Cell.D8), grid);
+        this.add(new QueenBlack(Cell.D8), grid);
         this.add(new KingBlack(Cell.E8), grid);
         this.add(new BishopBlack(Cell.F8), grid);
         this.add(new KnightBlack(Cell.G8), grid);
@@ -146,7 +151,7 @@ public class Chess extends Application {
         this.add(new RookWhite(Cell.A1), grid);
         this.add(new KnightWhite(Cell.B1), grid);
         this.add(new BishopWhite(Cell.C1), grid);
-        this.add(new QeenWhite(Cell.D1), grid);
+        this.add(new QueenWhite(Cell.D1), grid);
         this.add(new KingWhite(Cell.E1), grid);
         this.add(new BishopWhite(Cell.F1), grid);
         this.add(new KnightWhite(Cell.G1), grid);

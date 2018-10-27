@@ -1,24 +1,19 @@
 package ru.job4j.chess.firuges.white;
 
-import ru.job4j.chess.firuges.AbstractFigure;
+import ru.job4j.chess.firuges.AbstractRook;
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 /**
- *
- * @author Petr Arsentev (parsentev@yandex.ru)
- * @version $Id$
- * @since 0.1
+ * Фигура белая ладья.
+ * @author vzamylin
+ * @version 1
+ * @since 27.10.2018
  */
-public class RookWhite extends AbstractFigure {
+public class RookWhite extends AbstractRook {
 
     public RookWhite(final Cell position) {
         super(position);
-    }
-
-    @Override
-    public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] {dest};
     }
 
     @Override
